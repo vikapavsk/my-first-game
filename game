@@ -1,0 +1,80 @@
+def greet():
+    print("Welcome to the game!")
+    print("-----------------")
+
+def game_table():
+    print("  | 0 | 1 | 2 | ")
+    print("  ------------- ")
+    for i, row in enumerate(game):
+        row_str = f"{i} | {' | '.join(row)} | "
+        print(row_str)
+        print("  ------------- ")
+    print()
+
+def ask():
+    while True:
+        coords = input("Your turn: ").split()
+        
+        if len(coords) != 2:
+            print("Enter two values!")
+            continue
+        
+        x, y = coords
+        
+        if not(x.isdigit()) or not(y.isdigit()):
+            print("Enter numbers!")
+            continue
+        
+        x, y = int(x), int(y)
+        
+        if 0 > x or x > 2 or  0 > y or  y > 2 :
+            print("Coordinates out of range!")
+            continue
+        
+        if game[x][y] != " ":
+            print("Occupied!")
+            continue
+        
+        return x, y
+            
+def check_win():
+    win_coord = (((0, 0), (0, 1), (0, 2)), ((1, 0), (1, 1), (1, 2)), ((2, 0), (2, 1), (2, 2)),
+                ((0, 2), (1, 1), (2, 0)), ((0, 0), (1, 1), (2, 2)), ((0, 0), (1, 0), (2, 0)),
+                ((0, 1), (1, 1), (2, 1)), ((0, 2), (1, 2), (2, 2)))
+    for coord in win_coord:
+        symbols = []
+        for c in coord:
+            symbols.append(game[c[0]][c[1]])
+        if symbols == ["X", "X", "X"]:
+            print("X won!")
+            return True
+        if symbols == ["0", "0", "0"]:
+            print("0 won!")
+            return True
+    return False
+
+greet()
+game = [[" "] * 3 for i in range(3) ]
+turn_num = 0
+while True:
+    turn_num += 1
+    game_table()
+    if turn_num % 2 == 1:
+        print("X turn!")
+    else:
+        print("0 turn!")
+    
+    x, y = ask()
+    
+    if turn_num % 2 == 1:
+        game[x][y] = "X"
+    else:
+        game[x][y] = "0"
+    
+    if check_win():
+        break
+    
+    if turn_num == 9:
+        print(" Ничья!")
+        break
+game_table()
