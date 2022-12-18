@@ -75,6 +75,6 @@ while True:
         break
     
     if turn_num == 9:
-        print(" Ничья!")
+        print("Tie!")
         break
 game_table()
